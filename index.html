@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noai, noimageai">
+<title>アオイロ・ログ | ボカロファンサイト</title>
+<meta name="description" content="ボカロ曲・調声・歌詞世界を記録するファンサイト。日記、イラストギャラリー、プレイリスト、about。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky: #3FCBEB;
+    --sky-deep: #1C8FB0;
+    --sky-pale: #E6F6FA;
+    --ink: #0B0D12;
+    --ink-soft: #2A3038;
+    --paper: #F5FBFD;
+    --neon: #00FFC2;
+    --line: rgba(11,13,18,0.10);
+    --radius: 2px;
+    --font-display: "Zen Kaku Gothic New", sans-serif;
+    --font-body: "Noto Sans JP", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  /* ---------- utility ---------- */
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+  .mono{ font-family: var(--font-mono); letter-spacing: 0.04em; }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sky-deep);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 18px; height: 2px;
+    background: var(--sky);
+  }
+
+  /* ---------- header / nav ---------- */
+  header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(245,251,253,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 28px;
+    max-width: 1080px; margin: 0 auto;
+  }
+  .brand{
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 19px;
+    letter-spacing: 0.02em;
+    display:flex; align-items:baseline; gap:8px;
+    text-decoration:none;
+  }
+  .brand small{
+    font-family: var(--font-mono);
+    font-weight:400;
+    font-size: 11px;
+    color: var(--sky-deep);
+    letter-spacing: 0.1em;
+  }
+  .navlinks{
+    display:flex; gap: 6px;
+    list-style:none; margin:0; padding:0;
+  }
+  .navlinks a{
+    text-decoration:none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    position:relative;
+  }
+  .navlinks a::after{
+    content:"";
+    position:absolute; left:14px; right:14px; bottom:5px;
+    height:2px; background: var(--sky);
+    transform: scaleX(0); transform-origin:left;
+    transition: transform .25s ease;
+  }
+  .navlinks a:hover::after{ transform: scaleX(1); }
+  .navlinks a.current{ color: var(--sky-deep); font-weight:700; }
+  .navlinks a.current::after{ transform: scaleX(1); }
+  .navtoggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .navtoggle span{ display:block; width:22px; height:2px; background:var(--ink); margin:5px 0; }
+
+  @media (max-width: 720px){
+    .navtoggle{ display:block; }
+    .navlinks{
+      position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      max-height:0; overflow:hidden;
+      transition: max-height .3s ease;
+    }
+    .navlinks.open{ max-height:300px; }
+    .navlinks a{ padding: 14px 28px; border-top: 1px solid var(--line); }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding: 88px 0 64px;
+    border-bottom: 1px solid var(--line);
+  }
+  .pianoroll{
+    position:absolute; inset:0;
+    pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 100% 34px, 46px 100%;
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 85%);
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
+    opacity: 0.55;
+  }
+  .noterow{
+    position:absolute; left:0; height:34px;
+    display:flex; gap:0;
+  }
+  .note{
+    width: 46px; height: 22px; margin-top:6px;
+    background: var(--sky);
+    opacity: 0.16;
+    border-radius: 3px;
+  }
+  .note.lit{
+    opacity: 0.9;
+    background: var(--neon);
+    box-shadow: 0 0 14px rgba(0,255,194,0.55);
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:0.9; }
+    50%{ opacity:0.35; }
+  }
+  .noterow.r1{ top: 60px; }
+  .noterow.r2{ top: 128px; }
+  .noterow.r3{ top: 196px; }
+  .noterow.r4{ top: 264px; }
+
+  .hero-inner{ position:relative; z-index:2; }
+  .hero-meta{
+    display:flex; gap:18px; flex-wrap:wrap;
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+  .hero-meta span{ display:flex; align-items:center; gap:6px; }
+  .hero-meta b{ color: var(--sky-deep); font-weight:700; }
+
+  h1.title{
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(40px, 8vw, 78px);
+    line-height: 1.05;
+    margin: 0 0 20px;
+    letter-spacing: -0.01em;
+  }
+  h1.title .accent{ color: var(--sky-deep); }
+  h1.title .glow{
+    color: var(--ink);
+    -webkit-text-stroke: 1px var(--sky);
+  }
+
+  .lede{
+    max-width: 560px;
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+  }
+
+  .waveform{
+    display:flex; align-items:flex-end; gap:3px;
+    height: 40px; margin-bottom: 34px;
+  }
+  .waveform i{
+    display:block; width:4px; background: var(--sky);
+    border-radius: 2px 2px 0 0;
+    animation: bar 1.8s ease-in-out infinite;
+  }
+  .waveform i:nth-child(odd){ background: var(--sky-deep); }
+  @keyframes bar{
+    0%,100%{ transform: scaleY(0.3); }
+    50%{ transform: scaleY(1); }
+  }
+
+  .hero-cta{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 13px 22px;
+    font-size: 14px; font-weight:700;
+    text-decoration:none;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--ink);
+    transition: background .2s ease, color .2s ease, transform .15s ease;
+  }
+  .btn.primary{ background: var(--ink); color: var(--paper); }
+  .btn.primary:hover{ background: var(--sky-deep); border-color: var(--sky-deep); transform: translateY(-1px); }
+  .btn.ghost:hover{ background: var(--ink); color: var(--paper); transform: translateY(-1px); }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 72px 0; border-bottom: 1px solid var(--line); }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap: 20px; margin-bottom: 36px; flex-wrap:wrap;
+  }
+  h2.section-title{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    margin: 10px 0 0;
+  }
+
+  /* ---------- track list (page links styled like DAW tracks) ---------- */
+  .tracklist{ display:flex; flex-direction:column; border-top:1px solid var(--line); }
+  .track{
+    display:grid;
+    grid-template-columns: 56px 1fr auto 90px;
+    align-items:center;
+    gap: 20px;
+    padding: 22px 18px;
+    border-bottom: 1px solid var(--line);
+    text-decoration:none;
+    color: var(--ink);
+    transition: background .2s ease, padding-left .2s ease;
+  }
+  .track:hover{ background: var(--sky-pale); padding-left: 26px; }
+  .track .num{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--sky-deep);
+  }
+  .track .info b{
+    font-family: var(--font-display);
+    font-size: 18px;
+    display:block;
+    margin-bottom: 4px;
+  }
+  .track .info span{
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .track .vel{
+    display:flex; gap:3px; align-items:flex-end; height:20px;
+  }
+  .track .vel i{
+    width:3px; background: var(--sky); border-radius:1px;
+  }
+  .track .arrow{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align:right;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 600px){
+    .track{ grid-template-columns: 32px 1fr; }
+    .track .vel, .track .arrow{ display:none; }
+  }
+
+  /* ---------- diary preview ---------- */
+  .diary{
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .diary .section-head .eyebrow{ color: var(--sky); }
+  .diary .section-head .eyebrow::before{ background: var(--neon); }
+  .diary h2.section-title{ color: var(--paper); }
+  .entries{ display:grid; gap: 1px; background: rgba(255,255,255,0.1); }
+  .entry{
+    background: var(--ink);
+    padding: 20px 4px;
+    display:grid;
+    grid-template-columns: 120px 1fr;
+    gap: 18px;
+  }
+  .entry .date{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--sky);
+  }
+  .entry p{ margin:0; color: rgba(245,251,253,0.82); font-size: 14px; }
+  @media (max-width: 560px){
+    .entry{ grid-template-columns: 1fr; gap:6px; }
+  }
+
+  /* ---------- about strip ---------- */
+  .about-strip{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  @media (max-width: 760px){ .about-strip{ grid-template-columns: 1fr; } }
+  .about-strip p{ color: var(--ink-soft); margin: 14px 0 0; }
+  .spec{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    display:grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 16px;
+    align-content:start;
+  }
+  .spec dt{ color: var(--sky-deep); }
+  .spec dd{ margin:0; }
+
+  /* ---------- footer ---------- */
+  footer{ padding: 56px 0 40px; }
+  .foot-grid{
+    display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;
+    margin-bottom: 40px;
+  }
+  .foot-links{ display:flex; flex-direction:column; gap:10px; }
+  .foot-links a{ text-decoration:none; font-size:14px; color: var(--ink-soft); }
+  .foot-links a:hover{ color: var(--sky-deep); }
+  .foot-note{
+    font-size: 12px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="brand">アオイロ・ログ <small>VOCALOID DIARY</small></a>
+    <button class="navtoggle" aria-label="メニュー" onclick="document.getElementById('navlinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="index.html" class="current">index</a></li>
+      <li><a href="blog.html">blog</a></li>
+      <li><a href="gallery.html">gallery</a></li>
+      <li><a href="playlist.html">playlist</a></li>
+      <li><a href="about.html">about</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="pianoroll" aria-hidden="true">
+    <div class="noterow r1">
+      <div class="note" style="margin-left:46px"></div>
+      <div class="note lit" style="margin-left:24px"></div>
+      <div class="note" style="margin-left:70px"></div>
+    </div>
+    <div class="noterow r2">
+      <div class="note" style="margin-left:138px"></div>
+      <div class="note" style="margin-left:24px"></div>
+    </div>
+    <div class="noterow r3">
+      <div class="note" style="margin-left:92px"></div>
+      <div class="note lit" style="margin-left:46px"></div>
+    </div>
+    <div class="noterow r4">
+      <div class="note" style="margin-left:24px"></div>
+      <div class="note" style="margin-left:92px"></div>
+      <div class="note" style="margin-left:24px"></div>
+    </div>
+  </div>
+
+  <div class="wrap hero-inner">
+    <div class="hero-meta">
+      <span class="mono">TEMPO <b>—</b></span>
+      <span class="mono">KEY <b>Cyan Major</b></span>
+      <span class="mono">TRACK <b>01 / OPEN</b></span>
+    </div>
+
+    <h1 class="title">好きな声を、<br><span class="accent">全部</span>記録する<span class="glow">サイト。</span></h1>
+    <p class="lede">
+      ボカロ曲、調声のこだわり、歌詞の一節。心を動かされた瞬間を日記に書き留めて、
+      イラストとプレイリストにして残しておくためのファンサイトです。
+    </p>
+
+    <div class="waveform" aria-hidden="true">
+      <i style="height:40%; animation-delay:0s"></i>
+      <i style="height:70%; animation-delay:.1s"></i>
+      <i style="height:30%; animation-delay:.2s"></i>
+      <i style="height:90%; animation-delay:.3s"></i>
+      <i style="height:55%; animation-delay:.4s"></i>
+      <i style="height:80%; animation-delay:.5s"></i>
+      <i style="height:35%; animation-delay:.6s"></i>
+      <i style="height:65%; animation-delay:.7s"></i>
+      <i style="height:45%; animation-delay:.8s"></i>
+      <i style="height:75%; animation-delay:.9s"></i>
+      <i style="height:25%; animation-delay:1s"></i>
+      <i style="height:60%; animation-delay:1.1s"></i>
+    </div>
+
+    <div class="hero-cta">
+      <a href="blog.html" class="btn primary">日記を読む →</a>
+      <a href="playlist.html" class="btn ghost">プレイリストを聴く</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Contents</p>
+        <h2 class="section-title">このサイトでできること</h2>
+      </div>
+    </div>
+
+    <div class="tracklist">
+      <a href="blog.html" class="track">
+        <span class="num mono">01</span>
+        <span class="info">
+          <b>blog</b>
+          <span>聴いた曲、感じたことをその日のうちに短く残す日記</span>
+        </span>
+        <span class="vel" aria-hidden="true">
+          <i style="height:60%"></i><i style="height:90%"></i><i style="height:40%"></i><i style="height:75%"></i>
+        </span>
+        <span class="arrow mono">OPEN →</span>
+      </a>
+      <a href="gallery.html" class="track">
+        <span class="num mono">02</span>
+        <span class="info">
+          <b>gallery</b>
+          <span>お気に入りのMVカットやイラストをまとめた展示室</span>
+        </span>
+        <span class="vel" aria-hidden="true">
+          <i style="height:80%"></i><i style="height:30%"></i><i style="height:65%"></i><i style="height:50%"></i>
+        </span>
+        <span class="arrow mono">OPEN →</span>
+      </a>
+      <a href="playlist.html" class="track">
+        <span class="num mono">03</span>
+        <span class="info">
+          <b>playlist</b>
+          <span>今聴いてほしい曲順に並べた、テーマ別プレイリスト集</span>
+        </span>
+        <span class="vel" aria-hidden="true">
+          <i style="height:45%"></i><i style="height:85%"></i><i style="height:55%"></i><i style="height:70%"></i>
+        </span>
+        <span class="arrow mono">OPEN →</span>
+      </a>
+      <a href="about.html" class="track">
+        <span class="num mono">04</span>
+        <span class="info">
+          <b>about</b>
+          <span>このサイトを運営している人、ボカロとの出会いについて</span>
+        </span>
+        <span class="vel" aria-hidden="true">
+          <i style="height:35%"></i><i style="height:55%"></i><i style="height:80%"></i><i style="height:40%"></i>
+        </span>
+        <span class="arrow mono">OPEN →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="diary">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Latest</p>
+        <h2 class="section-title">最近の日記から</h2>
+      </div>
+      <a href="blog.html" class="btn ghost" style="border-color: var(--sky); color: var(--paper);">全ての日記を見る →</a>
+    </div>
+
+    <div class="entries">
+      <div class="entry">
+        <span class="date mono">2026.07.10</span>
+        <p>作業用に流していた曲のサビで手が止まった。調声のピッチベンドが人間の癖よりも人間らしくて、しばらく同じ8小節をリピートしていた。</p>
+      </div>
+      <div class="entry">
+        <span class="date mono">2026.07.06</span>
+        <p>新曲のMVを三周見た。背景美術の色数を絞っているぶん、声のレイヤーがくっきり前に出てくる構成だった。</p>
+      </div>
+      <div class="entry">
+        <span class="date mono">2026.06.29</span>
+        <p>プレイリストを一つ組み直した。曲順を変えるだけで同じ曲の輪郭が変わるのが面白い。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap about-strip">
+    <div>
+      <p class="eyebrow">About this site</p>
+      <h2 class="section-title">記録することについて</h2>
+      <p>
+        流れていく音を、流れていくままにしないための場所です。
+        好きな曲やイラストを一箇所にまとめて、あとから何度でも辿れるようにしています。
+      </p>
+    </div>
+    <dl class="spec">
+      <dt>UPDATE</dt><dd>不定期・週1〜2回ほど</dd>
+      <dt>FOCUS</dt><dd>ボカロ楽曲 / MV / 調声</dd>
+      <dt>SINCE</dt><dd>2026</dd>
+      <dt>CONTACT</dt><dd>フォームより受付</dd>
+    </dl>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <p class="brand" style="margin-bottom:10px;">アオイロ・ログ</p>
+        <p style="color:var(--ink-soft); font-size:13px; max-width:280px;">
+          ボカロ曲と、それにまつわる日々の記録。
+        </p>
+      </div>
+      <div class="foot-links">
+        <a href="blog.html">blog</a>
+        <a href="gallery.html">gallery</a>
+        <a href="playlist.html">playlist</a>
+        <a href="about.html">about</a>
+      </div>
+      <div class="foot-links">
+        <a href="#contact">お問い合わせ</a>
+      </div>
+    </div>
+    <div class="foot-note">
+      <span>© 2026 アオイロ・ログ</span>
+      <span>本サイトの文章・画像のAI学習利用は禁止します（noai / noimageai）</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
