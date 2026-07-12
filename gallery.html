@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noai, noimageai">
+<title>gallery | アオイロ・ログ</title>
+<meta name="description" content="お気に入りのMVカットやイラストをまとめたギャラリーページ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky: #3FCBEB;
+    --sky-deep: #1C8FB0;
+    --sky-pale: #E6F6FA;
+    --ink: #0B0D12;
+    --ink-soft: #2A3038;
+    --paper: #F5FBFD;
+    --neon: #00FFC2;
+    --line: rgba(11,13,18,0.10);
+    --radius: 2px;
+    --font-display: "Zen Kaku Gothic New", sans-serif;
+    --font-body: "Noto Sans JP", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+  .mono{ font-family: var(--font-mono); letter-spacing: 0.04em; }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sky-deep);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 18px; height: 2px;
+    background: var(--sky);
+  }
+
+  /* ---------- header / nav ---------- */
+  header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(245,251,253,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 28px;
+    max-width: 1080px; margin: 0 auto;
+  }
+  .brand{
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 19px;
+    letter-spacing: 0.02em;
+    display:flex; align-items:baseline; gap:8px;
+    text-decoration:none;
+  }
+  .brand small{
+    font-family: var(--font-mono);
+    font-weight:400;
+    font-size: 11px;
+    color: var(--sky-deep);
+    letter-spacing: 0.1em;
+  }
+  .navlinks{
+    display:flex; gap: 6px;
+    list-style:none; margin:0; padding:0;
+  }
+  .navlinks a{
+    text-decoration:none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    position:relative;
+  }
+  .navlinks a::after{
+    content:"";
+    position:absolute; left:14px; right:14px; bottom:5px;
+    height:2px; background: var(--sky);
+    transform: scaleX(0); transform-origin:left;
+    transition: transform .25s ease;
+  }
+  .navlinks a:hover::after{ transform: scaleX(1); }
+  .navlinks a.current{ color: var(--sky-deep); font-weight:700; }
+  .navlinks a.current::after{ transform: scaleX(1); }
+  .navtoggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .navtoggle span{ display:block; width:22px; height:2px; background:var(--ink); margin:5px 0; }
+
+  @media (max-width: 720px){
+    .navtoggle{ display:block; }
+    .navlinks{
+      position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      max-height:0; overflow:hidden;
+      transition: max-height .3s ease;
+    }
+    .navlinks.open{ max-height:300px; }
+    .navlinks a{ padding: 14px 28px; border-top: 1px solid var(--line); }
+  }
+
+  /* ---------- page head ---------- */
+  .pagehead{
+    padding: 64px 0 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  h1.title{
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(32px, 6vw, 46px);
+    margin: 12px 0 20px;
+    letter-spacing: -0.01em;
+  }
+  .lede{
+    max-width: 520px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+  }
+
+  /* ---------- filter chips ---------- */
+  .filters{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .chip{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 8px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: border-color .2s ease, color .2s ease, background .2s ease;
+  }
+  .chip:hover{ border-color: var(--sky); color: var(--sky-deep); }
+  .chip.active{
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ---------- gallery grid ---------- */
+  .gallery{
+    padding: 44px 0 88px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 860px){ .gallery{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px){ .gallery{ grid-template-columns: 1fr; } }
+
+  .piece{
+    display:block;
+    text-decoration:none;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    overflow:hidden;
+    background: var(--paper);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .piece:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(11,13,18,0.08);
+  }
+  .frame{
+    position:relative;
+    aspect-ratio: 4 / 5;
+    background:
+      repeating-linear-gradient(135deg, rgba(11,13,18,0.05) 0 2px, transparent 2px 14px),
+      linear-gradient(160deg, var(--sky-pale), var(--sky) 130%);
+    display:flex; align-items:flex-end;
+    overflow:hidden;
+  }
+  .frame::before{
+    content: attr(data-tag);
+    position:absolute; top:12px; left:12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4px 9px;
+    border-radius: 999px;
+  }
+  .frame .idx{
+    font-family: var(--font-mono);
+    font-size: 56px;
+    font-weight: 700;
+    color: rgba(11,13,18,0.16);
+    padding: 14px 16px;
+    line-height:1;
+  }
+  .piece.dark .frame{
+    background:
+      repeating-linear-gradient(135deg, rgba(245,251,253,0.06) 0 2px, transparent 2px 14px),
+      linear-gradient(160deg, var(--ink), var(--sky-deep) 150%);
+  }
+  .piece.dark .frame .idx{ color: rgba(245,251,253,0.22); }
+  .piece.dark .frame::before{ background: var(--neon); color: var(--ink); }
+
+  .caption{ padding: 14px 16px 16px; }
+  .caption b{
+    font-family: var(--font-display);
+    font-size: 15px;
+    display:block;
+    margin-bottom: 4px;
+  }
+  .caption .meta{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    display:flex; justify-content:space-between;
+  }
+
+  /* ---------- footer ---------- */
+  footer{ padding: 56px 0 40px; border-top: 1px solid var(--line); }
+  .foot-grid{
+    display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;
+    margin-bottom: 40px;
+  }
+  .foot-links{ display:flex; flex-direction:column; gap:10px; }
+  .foot-links a{ text-decoration:none; font-size:14px; color: var(--ink-soft); }
+  .foot-links a:hover{ color: var(--sky-deep); }
+  .foot-note{
+    font-size: 12px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="brand">アオイロ・ログ <small>VOCALOID DIARY</small></a>
+    <button class="navtoggle" aria-label="メニュー" onclick="document.getElementById('navlinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="index.html">index</a></li>
+      <li><a href="blog.html">blog</a></li>
+      <li><a href="gallery.html" class="current">gallery</a></li>
+      <li><a href="playlist.html">playlist</a></li>
+      <li><a href="about.html">about</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Gallery</p>
+    <h1 class="title">ギャラリー</h1>
+    <p class="lede">お気に入りのMVカットやイラストを集めた展示室。曲・イラストレーター・雰囲気で並べています。</p>
+
+    <div class="filters">
+      <button class="chip active">All</button>
+      <button class="chip">MV Cut</button>
+      <button class="chip">Illustration</button>
+      <button class="chip">Fan Art</button>
+    </div>
+  </div>
+
+  <div class="gallery">
+
+    <a href="#" class="piece">
+      <div class="frame" data-tag="MV CUT"><span class="idx">01</span></div>
+      <div class="caption">
+        <b>夜行バスと信号機</b>
+        <div class="meta"><span>MV Cut</span><span>2026.06</span></div>
+      </div>
+    </a>
+
+    <a href="#" class="piece dark">
+      <div class="frame" data-tag="ILLUST"><span class="idx">02</span></div>
+      <div class="caption">
+        <b>透明な午後</b>
+        <div class="meta"><span>Illustration</span><span>2026.05</span></div>
+      </div>
+    </a>
+
+    <a href="#" class="piece">
+      <div class="frame" data-tag="FAN ART"><span class="idx">03</span></div>
+      <div class="caption">
+        <b>波形のドレス</b>
+        <div class="meta"><span>Fan Art</span><span>2026.05</span></div>
+      </div>
+    </a>
+
+    <a href="#" class="piece dark">
+      <div class="frame" data-tag="MV CUT"><span class="idx">04</span></div>
+      <div class="caption">
+        <b>サビ前の静けさ</b>
+        <div class="meta"><span>MV Cut</span><span>2026.04</span></div>
+      </div>
+    </a>
+
+    <a href="#" class="piece">
+      <div class="frame" data-tag="ILLUST"><span class="idx">05</span></div>
+      <div class="caption">
+        <b>電子の海</b>
+        <div class="meta"><span>Illustration</span><span>2026.03</span></div>
+      </div>
+    </a>
+
+    <a href="#" class="piece dark">
+      <div class="frame" data-tag="FAN ART"><span class="idx">06</span></div>
+      <div class="caption">
+        <b>ピッチベンドの手</b>
+        <div class="meta"><span>Fan Art</span><span>2026.02</span></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <p class="brand" style="margin-bottom:10px;">アオイロ・ログ</p>
+        <p style="color:var(--ink-soft); font-size:13px; max-width:280px;">
+          ボカロ曲と、それにまつわる日々の記録。
+        </p>
+      </div>
+      <div class="foot-links">
+        <a href="index.html">index</a>
+        <a href="blog.html">blog</a>
+        <a href="playlist.html">playlist</a>
+        <a href="about.html">about</a>
+      </div>
+    </div>
+    <div class="foot-note">
+      <span>© 2026 アオイロ・ログ</span>
+      <span>本サイトの文章・画像のAI学習利用は禁止します（noai / noimageai）</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
