@@ -172,20 +172,40 @@
     padding-top: 3px;
   }
   .track-meta{
-    display:flex; align-items:baseline; gap:10px;
-    flex-wrap: wrap;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
   }
   .track-meta .song{
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 17px;
   }
-  .track-meta .vocal{
+  .track-sub{
+    display:flex; align-items:center; gap:9px;
+    flex-wrap: wrap;
+    margin-bottom: 9px;
+  }
+  .producer{
     font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--sky-deep);
+    color: var(--ink-soft);
   }
+  .vchip{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    padding: 2px 10px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .vchip.miku{ color:#0D8C83; background:rgba(63,203,187,0.12); }
+  .vchip.gumi{ color:#5C8A1D; background:rgba(153,204,51,0.16); }
+  .vchip.luka{ color:#C2577E; background:rgba(255,179,217,0.20); }
+  .vchip.flower{ color:#6B4F94; background:rgba(155,124,182,0.16); }
+  .vchip.rin, .vchip.len{ color:#9A7B00; background:rgba(255,225,0,0.18); }
+  .vchip.kaito{ color:#1C5FA8; background:rgba(0,102,204,0.12); }
+  .vchip.meiko{ color:#B23A3A; background:rgba(204,51,51,0.12); }
+
   .track p.comment{
     margin: 0;
     font-size: 14px;
@@ -252,42 +272,46 @@
     <div class="track">
       <span class="num mono">01</span>
       <div>
-        <div class="track-meta">
-          <span class="song">千本桜</span>
-          <span class="vocal">黒うさP feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">オシリスダンス（Osiris Dance）</span></div>
+        <div class="track-sub">
+          <span class="producer">みつあくま</span>
+          <span class="vchip miku">初音ミク & 重音テト</span>
         </div>
-        <p class="comment">和楽器のイントロが流れた瞬間にテンションが上がる定番曲。何百回聴いても飽きない。</p>
+        <p class="comment">楽しくて好き。明るい曲を摂取したいときに聴いてる。</p>
       </div>
     </div>
 
     <div class="track">
       <span class="num mono">02</span>
       <div>
-        <div class="track-meta">
-          <span class="song">メルト</span>
-          <span class="vocal">ryo feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">，星</span></div>
+        <div class="track-sub">
+          <span class="producer">マキシウキョウ</span>
+          <span class="vchip miku">初音ミク</span>
         </div>
-        <p class="comment">ボカロを好きになった原点みたいな曲。今聴いてもメロディの透明感が変わらない。</p>
+        <p class="comment">透明感ある落ち着く曲。</p>
       </div>
     </div>
 
     <div class="track">
       <span class="num mono">03</span>
       <div>
-        <div class="track-meta">
-          <span class="song">ワールドイズマイン</span>
-          <span class="vocal">ryo feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">はらパン◎どーなつ</span></div>
+        <div class="track-sub">
+          <span class="producer">暴飲暴食P</span>
+          <span class="vchip miku">重音テト</span>
         </div>
-        <p class="comment">わがままな歌詞なのに憎めない。サビの跳ねるリズムが元気をくれる。</p>
+        <p class="comment">リズムの良い可愛い曲で好き。</p>
       </div>
     </div>
 
     <div class="track">
       <span class="num mono">04</span>
       <div>
-        <div class="track-meta">
-          <span class="song">からくりピエロ</span>
-          <span class="vocal">40mP feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">からくりピエロ</span></div>
+        <div class="track-sub">
+          <span class="producer">40mP</span>
+          <span class="vchip miku">初音ミク</span>
         </div>
         <p class="comment">切ないけど聴き心地がいい。歩きながら聴くとちょっと涙腺にくる。</p>
       </div>
@@ -296,9 +320,10 @@
     <div class="track">
       <span class="num mono">05</span>
       <div>
-        <div class="track-meta">
-          <span class="song">脳漿炸裂ガール</span>
-          <span class="vocal">れるりり feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">脳漿炸裂ガール</span></div>
+        <div class="track-sub">
+          <span class="producer">れるりり</span>
+          <span class="vchip miku">初音ミク</span>
         </div>
         <p class="comment">タイトルは物騒なのに曲は最高にキャッチー。カラオケで歌うと盛り上がる。</p>
       </div>
@@ -307,9 +332,11 @@
     <div class="track">
       <span class="num mono">06</span>
       <div>
-        <div class="track-meta">
-          <span class="song">マトリョシカ</span>
-          <span class="vocal">ハチ feat. 初音ミク・GUMI</span>
+        <div class="track-meta"><span class="song">マトリョシカ</span></div>
+        <div class="track-sub">
+          <span class="producer">ハチ</span>
+          <span class="vchip miku">初音ミク</span>
+          <span class="vchip gumi">GUMI</span>
         </div>
         <p class="comment">ミクとGUMIの掛け合いがクセになる。カオスなのに構成はすごく緻密。</p>
       </div>
@@ -318,9 +345,10 @@
     <div class="track">
       <span class="num mono">07</span>
       <div>
-        <div class="track-meta">
-          <span class="song">サイハテ</span>
-          <span class="vocal">Junky feat. 巡音ルカ</span>
+        <div class="track-meta"><span class="song">サイハテ</span></div>
+        <div class="track-sub">
+          <span class="producer">Junky</span>
+          <span class="vchip luka">巡音ルカ</span>
         </div>
         <p class="comment">ルカの低めの声域がぴったり合う一曲。夜、静かな部屋で聴きたい。</p>
       </div>
@@ -329,9 +357,10 @@
     <div class="track">
       <span class="num mono">08</span>
       <div>
-        <div class="track-meta">
-          <span class="song">アスノヨゾラ哨戒班</span>
-          <span class="vocal">Orangestar feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">アスノヨゾラ哨戒班</span></div>
+        <div class="track-sub">
+          <span class="producer">Orangestar</span>
+          <span class="vchip miku">初音ミク</span>
         </div>
         <p class="comment">前向きな疾走感が好き。イントロが流れると自然と早歩きになる。</p>
       </div>
@@ -340,9 +369,10 @@
     <div class="track">
       <span class="num mono">09</span>
       <div>
-        <div class="track-meta">
-          <span class="song">アイデンティティ</span>
-          <span class="vocal">Chinozo feat. flower</span>
+        <div class="track-meta"><span class="song">アイデンティティ</span></div>
+        <div class="track-sub">
+          <span class="producer">Chinozo</span>
+          <span class="vchip flower">flower</span>
         </div>
         <p class="comment">flowerの少しかすれた声が刺さる。サビの畳みかけるような歌詞が好き。</p>
       </div>
@@ -351,9 +381,11 @@
     <div class="track">
       <span class="num mono">10</span>
       <div>
-        <div class="track-meta">
-          <span class="song">ヒバナ</span>
-          <span class="vocal">DECO*27 feat. 初音ミク・GUMI</span>
+        <div class="track-meta"><span class="song">ヒバナ</span></div>
+        <div class="track-sub">
+          <span class="producer">DECO*27</span>
+          <span class="vchip miku">初音ミク</span>
+          <span class="vchip gumi">GUMI</span>
         </div>
         <p class="comment">ミクとGUMIのユニゾンが火花みたいで曲名通り。展開が飽きさせない。</p>
       </div>
@@ -362,9 +394,10 @@
     <div class="track">
       <span class="num mono">11</span>
       <div>
-        <div class="track-meta">
-          <span class="song">ゴーストルール</span>
-          <span class="vocal">DECO*27 feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">ゴーストルール</span></div>
+        <div class="track-sub">
+          <span class="producer">DECO*27</span>
+          <span class="vchip miku">初音ミク</span>
         </div>
         <p class="comment">重めのテーマだけどサウンドがかっこよくて何度もリピートしてしまう。</p>
       </div>
@@ -373,9 +406,10 @@
     <div class="track">
       <span class="num mono">12</span>
       <div>
-        <div class="track-meta">
-          <span class="song">六兆年と一夜物語</span>
-          <span class="vocal">kemu feat. 鏡音レン</span>
+        <div class="track-meta"><span class="song">六兆年と一夜物語</span></div>
+        <div class="track-sub">
+          <span class="producer">kemu</span>
+          <span class="vchip rin">鏡音レン</span>
         </div>
         <p class="comment">レンの声質と物語の雰囲気がぴったり。歌詞の考察を読むのも好き。</p>
       </div>
@@ -384,9 +418,10 @@
     <div class="track">
       <span class="num mono">13</span>
       <div>
-        <div class="track-meta">
-          <span class="song">サンドリヨン</span>
-          <span class="vocal">buzzG feat. flower</span>
+        <div class="track-meta"><span class="song">サンドリヨン</span></div>
+        <div class="track-sub">
+          <span class="producer">buzzG</span>
+          <span class="vchip flower">flower</span>
         </div>
         <p class="comment">童話モチーフの歌詞が丁寧で、メロディも優しい。作業用によく流している。</p>
       </div>
@@ -395,9 +430,10 @@
     <div class="track">
       <span class="num mono">14</span>
       <div>
-        <div class="track-meta">
-          <span class="song">二息歩行</span>
-          <span class="vocal">てにをは feat. 初音ミク</span>
+        <div class="track-meta"><span class="song">二息歩行</span></div>
+        <div class="track-sub">
+          <span class="producer">てにをは</span>
+          <span class="vchip miku">初音ミク</span>
         </div>
         <p class="comment">言葉数が多いのに聴き取りやすい歌唱がすごい。歌詞世界にどっぷり浸れる曲。</p>
       </div>
